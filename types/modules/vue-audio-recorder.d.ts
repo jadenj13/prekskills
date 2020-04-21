@@ -1,1 +1,1 @@
-declare module 'vue-audio-recorder';
+declare module '@jadenj133/vue-audio-recorder';
