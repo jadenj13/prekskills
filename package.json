@@ -27,7 +27,8 @@
     "@nuxtjs/pwa": "^3.0.0-0",
     "jsonwebtoken": "^8.5.1",
     "nuxt": "^2.12.2",
-    "validator": "^13.0.0"
+    "validator": "^13.0.0",
+    "vue-audio-recorder": "^3.0.1"
   },
   "devDependencies": {
     "@nuxt/typescript-build": "^0.6.0",

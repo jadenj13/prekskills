@@ -19,7 +19,13 @@ export default {
         content: process.env.npm_package_description || '',
       },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      {
+        rel: 'stylesheet',
+        href: 'https://fonts.googleapis.com/css?family=Material+Icons',
+      },
+    ],
   },
   /*
    ** Customize the progress-bar color
@@ -32,7 +38,10 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['~/plugins/axios'],
+  plugins: [
+    '~/plugins/axios',
+    { src: '~/plugins/vue-audio-recorder', mode: 'client' },
+  ],
   /*
    ** Nuxt.js dev-modules
    */
@@ -72,6 +81,9 @@ export default {
         },
       },
     },
+    icons: {
+      iconFont: 'md',
+    },
   },
   auth: {
     strategies: {
@@ -97,6 +109,7 @@ export default {
       callback: false,
       home: '/dashboard',
     },
+    scopeKey: 'role',
   },
 
   /*

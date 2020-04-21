@@ -7,7 +7,20 @@
       :color="$store.state.snackbar.color"
       >{{ $store.state.snackbar.message }}</v-snackbar
     >
-    <nuxt />
+
+    <v-app-bar app flat color="#fff">
+      <v-spacer />
+      <v-btn v-if="$auth.user && $auth.user.role === 'admin'" text to="/admin">
+        Admin
+      </v-btn>
+      <v-btn v-if="$auth.loggedIn" text @click="$auth.logout()">
+        Log Out
+      </v-btn>
+    </v-app-bar>
+
+    <v-content>
+      <nuxt />
+    </v-content>
   </v-app>
 </template>
 
