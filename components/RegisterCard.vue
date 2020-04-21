@@ -90,11 +90,14 @@ export default Vue.extend<any, any, any, any>({
       this.isFetching = true;
 
       try {
-        const { token } = await this.$axios.$post('/user/register', {
-          email: this.email,
-          password: this.password,
-          name: this.name,
-        });
+        const { token } = await this.$axios.$post(
+          `${process.env.API_BASE_URL}/user/register`,
+          {
+            email: this.email,
+            password: this.password,
+            name: this.name,
+          },
+        );
 
         this.$auth.setUserToken(token);
       } catch (error) {
