@@ -20,6 +20,7 @@
     }
   },
   "dependencies": {
+    "@jadenj133/vue-audio-recorder": "^1.0.0",
     "@nuxt/typescript-runtime": "^0.4.0",
     "@nuxtjs/auth": "^4.9.0",
     "@nuxtjs/axios": "^5.3.6",
@@ -27,8 +28,7 @@
     "@nuxtjs/pwa": "^3.0.0-0",
     "jsonwebtoken": "^8.5.1",
     "nuxt": "^2.12.2",
-    "validator": "^13.0.0",
-    "vue-audio-recorder": "^3.0.1"
+    "validator": "^13.0.0"
   },
   "devDependencies": {
     "@nuxt/typescript-build": "^0.6.0",
