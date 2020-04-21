@@ -143,9 +143,7 @@ export default Vue.extend({
           const { signedRequest, url } = await this.$axios.$get<{
             signedRequest: string;
             url: string;
-          }>(
-            `${process.env.API_BASE_URL}/upload?filename=${name}&fileType=${type}`,
-          );
+          }>(`/upload?filename=${name}&fileType=${type}`);
 
           await axios.put(signedRequest, image, {
             headers: {
@@ -184,9 +182,7 @@ export default Vue.extend({
       const { signedRequest, url } = await this.$axios.$get<{
         signedRequest: string;
         url: string;
-      }>(
-        `${process.env.API_BASE_URL}/upload?filename=${this.recordingFilename}&fileType=audio/mpeg`,
-      );
+      }>(`/upload?filename=${this.recordingFilename}&fileType=audio/mpeg`);
 
       this.signedRequestForRecording = signedRequest;
       this.recordingUrl = url;

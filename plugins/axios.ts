@@ -1,8 +1,6 @@
 import { Plugin } from '@nuxt/types';
 
-const plugin: Plugin = ({ $axios, env, isClient }) => {
-  $axios.setBaseURL(env.API_BASE_URL);
-
+const plugin: Plugin = ({ $axios, isClient }) => {
   if (isClient) {
     const token = localStorage.getItem('token');
 

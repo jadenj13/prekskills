@@ -110,13 +110,10 @@ export default Vue.extend<any, any, any, any>({
       this.loadingState = 'creating-lesson';
 
       try {
-        this.lesson = await this.$axios.$post(
-          `${process.env.API_BASE_URL}/lesson`,
-          {
-            name: this.name,
-            description: this.description,
-          },
-        );
+        this.lesson = await this.$axios.$post(`/lesson`, {
+          name: this.name,
+          description: this.description,
+        });
 
         this.isCreatingLesson = '';
 
@@ -146,10 +143,7 @@ export default Vue.extend<any, any, any, any>({
       this.loadingState = 'submitting-lesson';
 
       try {
-        await this.$axios.put(
-          `${process.env.API_BASE_URL}/lesson/${this.lesson._id}`,
-          this.lesson,
-        );
+        await this.$axios.put(`/lesson/${this.lesson._id}`, this.lesson);
 
         this.displayDialog = false;
 
