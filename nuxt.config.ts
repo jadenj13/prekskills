@@ -60,7 +60,7 @@ export default {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {
-    baseUrl: process.env.API_BASE_URL,
+    baseURL: process.env.API_BASE_URL,
   },
   /*
    ** vuetify module configuration
@@ -85,6 +85,7 @@ export default {
       iconFont: 'md',
     },
   },
+
   auth: {
     strategies: {
       local: {
