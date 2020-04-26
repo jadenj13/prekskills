@@ -13,12 +13,11 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue';
+<script>
 import ScrollableWindow from '@/components/ScrollableWindow.vue';
 import AddLesson from '@/components/admin/lessons/AddLesson.vue';
 
-export default Vue.extend({
+export default {
   components: {
     ScrollableWindow,
     AddLesson,
@@ -38,5 +37,5 @@ export default Vue.extend({
       displayAddLesson: false,
     };
   },
-});
+};
 </script>

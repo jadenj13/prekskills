@@ -5,10 +5,10 @@
   "author": "jadenj133",
   "private": true,
   "scripts": {
-    "dev": "nuxt-ts",
-    "build": "nuxt-ts build",
-    "generate": "nuxt-ts generate",
-    "start": "nuxt-ts start",
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "start": "nuxt start",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore ."
   },
   "lint-staged": {
@@ -21,7 +21,6 @@
   },
   "dependencies": {
     "@jadenj133/vue-audio-recorder": "^1.0.0",
-    "@nuxt/typescript-runtime": "^0.4.0",
     "@nuxtjs/auth": "^4.9.0",
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/dotenv": "^1.4.0",
@@ -32,12 +31,7 @@
     "validator": "^13.0.0"
   },
   "devDependencies": {
-    "@nuxt/typescript-build": "^0.6.0",
-    "@nuxtjs/eslint-config-typescript": "^1.0.0",
     "@nuxtjs/eslint-module": "^1.0.0",
-    "@types/jsonwebtoken": "^8.3.9",
-    "@types/nuxtjs__auth": "^4.8.4",
-    "@types/validator": "^13.0.0",
     "babel-eslint": "^10.0.1",
     "eslint": "^6.1.0",
     "eslint-config-prettier": "^6.10.0",

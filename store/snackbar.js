@@ -1,5 +1,3 @@
-import { MutationTree } from 'vuex';
-
 export const state = () => ({
   message: '',
   timeout: 5000,
@@ -7,18 +5,8 @@ export const state = () => ({
   isShown: false,
 });
 
-export type RootState = ReturnType<typeof state>;
-
-export const mutations: MutationTree<RootState> = {
-  SET_SNACKBAR: (
-    rootState,
-    options: {
-      message: string;
-      color: string;
-      isShown: boolean;
-      timeout?: number;
-    },
-  ) => {
+export const mutations = {
+  SET_SNACKBAR: (rootState, options) => {
     const defaults = state();
 
     rootState.message = options.message || defaults.message;

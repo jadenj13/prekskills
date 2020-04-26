@@ -6,11 +6,10 @@
   </v-row>
 </template>
 
-<script lang="ts">
-import Vue from 'vue';
+<script>
 import LessonsWindow from '@/components/admin/lessons/LessonsWindow.vue';
 
-export default Vue.extend({
+export default {
   middleware: ['auth', 'admin'],
 
   components: {
@@ -22,5 +21,5 @@ export default Vue.extend({
       lessons: [],
     };
   },
-});
+};
 </script>

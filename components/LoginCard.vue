@@ -44,22 +44,19 @@
   </v-card>
 </template>
 
-<script lang="ts">
-import Vue from 'vue';
+<script>
 import isEmail from 'validator/lib/isEmail';
 
-export default Vue.extend<any, any, any, any>({
+export default {
   data() {
     return {
       isFetching: false,
       email: '',
       password: '',
       rules: {
-        email: [
-          (value: string) => isEmail(value) || 'Please enter a valid email.',
-        ],
+        email: [(value) => isEmail(value) || 'Please enter a valid email.'],
         password: [
-          (value: string) => !!value.length || 'Please enter a valid password.',
+          (value) => !!value.length || 'Please enter a valid password.',
         ],
       },
     };
@@ -93,5 +90,5 @@ export default Vue.extend<any, any, any, any>({
       }
     },
   },
-});
+};
 </script>

@@ -12,10 +12,8 @@
   </v-app>
 </template>
 
-<script lang="ts">
-import Vue from 'vue';
-
-export default Vue.extend({
+<script>
+export default {
   props: {
     error: {
       type: Object,
@@ -29,7 +27,7 @@ export default Vue.extend({
       otherError: 'An error occurred',
     };
   },
-});
+};
 </script>
 
 <style scoped>

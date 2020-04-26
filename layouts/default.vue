@@ -24,19 +24,17 @@
   </v-app>
 </template>
 
-<script lang="ts">
-import Vue from 'vue';
-
-export default Vue.extend({
+<script>
+export default {
   computed: {
     isSnackbarShown: {
       get() {
         return this.$store.state.snackbar.isShown;
       },
-      set(isShown: boolean) {
+      set(isShown) {
         return this.$store.commit('snackbar/SET_SNACKBAR', { isShown });
       },
     },
   },
-});
+};
 </script>

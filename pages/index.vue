@@ -8,11 +8,10 @@
   </v-container>
 </template>
 
-<script lang="ts">
-import Vue from 'vue';
+<script>
 import LoginCard from '@/components/LoginCard.vue';
 
-export default Vue.extend({
+export default {
   middleware: 'auth',
 
   auth: 'guest',
@@ -20,5 +19,5 @@ export default Vue.extend({
   components: {
     LoginCard,
   },
-});
+};
 </script>

@@ -96,11 +96,10 @@
   </v-container>
 </template>
 
-<script lang="ts">
-import Vue from 'vue';
+<script>
 import axios from 'axios';
 
-export default Vue.extend<any, any, any, any>({
+export default {
   props: {
     questionNumber: {
       type: Number,
@@ -117,9 +116,9 @@ export default Vue.extend<any, any, any, any>({
       recordingFilename: 'prompt-recording',
       signedRequestForRecording: '',
       recordingUrl: undefined,
-      answerImages: [] as File[],
+      answerImages: [],
       uploadingImages: false,
-      answers: [] as string[],
+      answers: [],
     };
   },
 
@@ -132,7 +131,7 @@ export default Vue.extend<any, any, any, any>({
     },
 
     correctAnswerSelected() {
-      return !!this.answers.findIndex((answer: any) => answer.isCorrect);
+      return !!this.answers.findIndex((answer) => answer.isCorrect);
     },
   },
 
@@ -141,7 +140,7 @@ export default Vue.extend<any, any, any, any>({
       this.uploadingImages = true;
 
       const urls = await Promise.all(
-        this.answerImages.map(async (image: File) => {
+        this.answerImages.map(async (image) => {
           const { name, type } = image;
 
           const { signedRequest, url } = await this.$axios.$get(
@@ -166,8 +165,8 @@ export default Vue.extend<any, any, any, any>({
       this.answerImages = [];
     },
 
-    markImageAsCorrectAnswer(index: number) {
-      const newAnswers = this.answers.map(({ imgUrl }: any) => ({
+    markImageAsCorrectAnswer(index) {
+      const newAnswers = this.answers.map(({ imgUrl }) => ({
         imgUrl,
         isCorrect: false,
       }));
@@ -196,7 +195,7 @@ export default Vue.extend<any, any, any, any>({
       });
     },
   },
-});
+};
 </script>
 
 <style>

@@ -71,11 +71,10 @@
   </v-dialog>
 </template>
 
-<script lang="ts">
-import Vue from 'vue';
+<script>
 import AddQuestion from '@/components/admin/lessons/AddQuestion.vue';
 
-export default Vue.extend<any, any, any, any>({
+export default {
   components: {
     AddQuestion,
   },
@@ -99,7 +98,7 @@ export default Vue.extend<any, any, any, any>({
       step: 'create-lesson',
       loadingState: '',
       lesson: undefined,
-      inputRules: [(value: string) => !!value || 'Field is required.'],
+      inputRules: [(value) => !!value || 'Field is required.'],
       standards: [
         'Math',
         'Reading',
@@ -116,7 +115,7 @@ export default Vue.extend<any, any, any, any>({
       get() {
         return this.display;
       },
-      set(value: boolean) {
+      set(value) {
         this.loadingState = '';
         this.lesson = undefined;
         this.name = '';
@@ -151,12 +150,7 @@ export default Vue.extend<any, any, any, any>({
       }
     },
 
-    addQuestion(question: {
-      sdImgUrl: string;
-      correctAnswerImgUrl: string;
-      incorrectAnswerImgUrls: string;
-      promptRecordingUrl: string;
-    }) {
+    addQuestion(question) {
       this.step = 'review-lesson';
       this.lesson = {
         ...this.lesson,
@@ -184,5 +178,5 @@ export default Vue.extend<any, any, any, any>({
       }
     },
   },
-});
+};
 </script>

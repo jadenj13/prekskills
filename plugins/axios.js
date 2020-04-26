@@ -1,6 +1,4 @@
-import { Plugin } from '@nuxt/types';
-
-const plugin: Plugin = ({ $axios, isClient }) => {
+const plugin = ({ $axios, isClient }) => {
   if (isClient) {
     const token = localStorage.getItem('token');
 

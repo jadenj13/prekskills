@@ -45,7 +45,7 @@ export default {
   /*
    ** Nuxt.js dev-modules
    */
-  buildModules: ['@nuxt/typescript-build', '@nuxtjs/vuetify'],
+  buildModules: ['@nuxtjs/vuetify'],
   /*
    ** Nuxt.js modules
    */
@@ -123,6 +123,6 @@ export default {
     /*
      ** You can extend webpack config here
      */
-    // extend(config: Configuration, ctx: Context) {},
+    extend(config, ctx) {},
   },
 };
