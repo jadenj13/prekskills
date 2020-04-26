@@ -1,4 +1,3 @@
-import VuetifyLoaderPlugin from 'vuetify-loader/lib/plugin';
 import colors from 'vuetify/es5/util/colors';
 
 require('dotenv').config();
@@ -39,9 +38,14 @@ export default {
    ** Plugins to load before mounting the App
    */
   plugins: [
+    '~/plugins/vuetify',
     '~/plugins/axios',
     { src: '~/plugins/vue-audio-recorder', mode: 'client' },
   ],
+  /*
+   ** Nuxt.js dev-modules
+   */
+  buildModules: ['@nuxtjs/vuetify'],
   /*
    ** Nuxt.js modules
    */
@@ -57,32 +61,6 @@ export default {
    */
   axios: {
     baseURL: process.env.API_BASE_URL,
-  },
-  /*
-   ** vuetify module configuration
-   ** https://github.com/nuxt-community/vuetify-module
-   */
-  vuetify: {
-    customVariables: ['~/assets/variables.scss'],
-    theme: {
-      themes: {
-        light: {
-          primary: colors.blue.darken2,
-          accent: colors.green.darken2,
-          secondary: colors.purple.darken2,
-          info: colors.teal.lighten1,
-          warning: colors.amber.base,
-          error: colors.deepOrange.accent4,
-          success: colors.green.accent3,
-        },
-      },
-      options: {
-        customProperties: true,
-      },
-    },
-    icons: {
-      iconFont: 'md',
-    },
   },
 
   auth: {
@@ -114,13 +92,5 @@ export default {
   /*
    ** Build configuration
    */
-  build: {
-    transpile: ['vuetify/lib'],
-    plugins: [new VuetifyLoaderPlugin()],
-    loaders: {
-      stylus: {
-        import: ['~assets/style/variables.styl'],
-      },
-    },
-  },
+  build: {},
 };
