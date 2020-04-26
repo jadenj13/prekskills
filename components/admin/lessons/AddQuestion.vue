@@ -84,7 +84,13 @@
           </v-col>
         </v-row>
 
-        <v-btn color="primary" @click="submit()">Submit Question</v-btn>
+        <v-btn
+          class="ml-auto mt-4"
+          color="primary"
+          :disabled="correctAnswerSelected"
+          @click="submit()"
+          >Submit Question</v-btn
+        >
       </v-card-text>
     </v-col>
   </v-container>
@@ -123,6 +129,10 @@ export default Vue.extend<any, any, any, any>({
         this.fileUploadingState !== 'uploading' &&
         (this.sdText || this.sdImg || this.fileUploadingState === 'complete')
       );
+    },
+
+    correctAnswerSelected() {
+      return !!this.answers.findIndex((answer: any) => answer.isCorrect);
     },
   },
 

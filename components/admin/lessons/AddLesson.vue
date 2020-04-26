@@ -121,6 +121,7 @@ export default Vue.extend<any, any, any, any>({
         this.lesson = undefined;
         this.name = '';
         this.description = '';
+        this.standard = '';
         this.step = 'create-lesson';
 
         return this.toggleDisplay(value);
