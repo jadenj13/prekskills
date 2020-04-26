@@ -1,4 +1,4 @@
-// import { Context, Configuration } from '@nuxt/types';
+import VuetifyLoaderPlugin from 'vuetify-loader/lib/plugin';
 import colors from 'vuetify/es5/util/colors';
 
 require('dotenv').config();
@@ -119,9 +119,12 @@ export default {
    ** Build configuration
    */
   build: {
-    /*
-     ** You can extend webpack config here
-     */
-    extend(config, ctx) {},
+    transpile: ['vuetify/lib'],
+    plugins: [new VuetifyLoaderPlugin()],
+    loaders: {
+      stylus: {
+        import: ['~assets/style/variables.styl'],
+      },
+    },
   },
 };
