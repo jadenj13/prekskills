@@ -113,7 +113,6 @@ export default {
       callback: false,
       home: '/dashboard',
     },
-    scopeKey: 'role',
   },
 
   /*
