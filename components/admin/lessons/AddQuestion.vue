@@ -1,115 +1,100 @@
 <template>
-  <form>
-    <v-card-text>
-      <h6 class="subtitle-1 my-2">Question #{{ questionNumber }}</h6>
-      <v-container v-if="step === 'upload-images'">
+  <v-container>
+    <v-card-subtitle class="subtitle-1 py-0"
+      >Question #{{ questionNumber }}</v-card-subtitle
+    >
+
+    <v-col v-if="step === 'add-sd'" cols="12">
+      <v-card-subtitle class="subtitle-1 py-0">Add SD</v-card-subtitle>
+      <v-card-text>
+        <v-text-field v-model="sdText" label="SD Text (Optional)" />
         <v-file-input
-          v-model="images"
+          v-model="sdImg"
           chips
           accept="image/*"
+          label="Select SD Image (Optional)"
+        />
+        <audio-recorder
+          class="mx-auto my-4"
+          :headers="{ 'Content-Type': 'audio/mpeg' }"
+          :show-download-button="false"
+          :show-upload-button="!!signedRequestForRecording"
+          :filename="recordingFilename"
+          :upload-url="signedRequestForRecording"
+          :after-recording="getSignedRequestForRecording"
+          :before-upload="() => (fileUploadingState = 'uploading')"
+          :successful-upload="() => (fileUploadingState = 'complete')"
+        />
+      </v-card-text>
+
+      <v-card-actions>
+        <v-btn
+          class="ml-auto"
+          color="primary"
+          :disabled="!validSd"
+          @click="() => (step = 'add-answers')"
+          >Continue</v-btn
+        >
+      </v-card-actions>
+    </v-col>
+
+    <v-col v-if="step === 'add-answers'" cols="12">
+      <v-card-subtitle class="subtitle-1 py-0">Add Answers</v-card-subtitle>
+      <v-card-text v-if="!answers.length">
+        <v-file-input
+          v-model="answerImages"
+          chips
           multiple
           counter
-          label="Select Images"
+          accept="image/*"
+          label="Select Answer Images"
         />
         <v-btn
-          :loading="isUploadingImages"
           color="primary"
-          :disabled="!images.length"
-          @click="uploadImages"
+          :disabled="!answerImages.length"
+          :loading="uploadingImages"
+          @click="uploadImages()"
           >Upload</v-btn
         >
-      </v-container>
+      </v-card-text>
 
-      <h6 v-if="step === 'select-sd'" class="title">Select SD</h6>
-      <h6 v-if="step === 'select-correct-answer'" class="title">
-        Select Correct Answer
-      </h6>
-
-      <v-container v-if="step !== 'upload-images' && step !== 'confirm'" fluid>
+      <v-card-text v-else>
+        <v-card-subtitle class="subtitle-1"
+          >Select Correct Answer</v-card-subtitle
+        >
         <v-row>
           <v-col
-            v-for="(url, i) in imgUrls"
+            v-for="({ imgUrl, isCorrect }, i) in answers"
             :key="`selectable-image-${i}`"
-            class="d-flex child-flex"
+            :class="{
+              'd-flex': true,
+              'child-flex': true,
+              'correct-answer': isCorrect,
+            }"
             cols="4"
           >
             <v-card
               flat
               tile
               class="d-flex selectable-image"
-              @click="selectImage(i)"
+              @click="markImageAsCorrectAnswer(i)"
             >
-              <v-img :src="url" aspect-ratio="1" />
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-container>
-
-      <v-container v-if="step === 'add-recording'">
-        <h6 class="title">Add Recording</h6>
-        <audio-recorder
-          class="mx-auto my-4"
-          :headers="{ 'Content-Type': 'audio/mpeg' }"
-          :show-download-button="false"
-          :show-upload-button="signedRequestForRecording"
-          :filename="recordingFilename"
-          :upload-url="signedRequestForRecording"
-          :after-recording="getSignedRequestForRecording"
-          :successful-upload="() => (step = 'confirm')"
-        />
-      </v-container>
-
-      <v-container v-if="step === 'confirm'">
-        <h6 class="title">SD Image</h6>
-        <v-row>
-          <v-col class="d-flex child-flex" cols="4">
-            <v-card flat tile class="d-flex">
-              <v-img :src="sdImgUrl" aspect-ratio="1" />
+              <v-img :src="imgUrl" aspect-ratio="1" />
             </v-card>
           </v-col>
         </v-row>
 
-        <h6 class="title">Correct Answer Image</h6>
-        <v-row>
-          <v-col class="d-flex child-flex" cols="4">
-            <v-card flat tile class="d-flex">
-              <v-img :src="correctAnswerImgUrl" aspect-ratio="1" />
-            </v-card>
-          </v-col>
-        </v-row>
-
-        <h6 class="title">
-          Incorrect Answer Images
-        </h6>
-        <v-row>
-          <v-col
-            v-for="(url, i) in incorrectAnswerImgUrls"
-            :key="`incorrect-answer-${i}`"
-            class="d-flex child-flex"
-            cols="4"
-          >
-            <v-card flat tile class="d-flex">
-              <v-img :src="url" aspect-ratio="1" />
-            </v-card>
-          </v-col>
-        </v-row>
-
-        <h6 class="title">Prompt Recording</h6>
-        <audio-player :src="recordingUrl" />
-      </v-container>
-    </v-card-text>
-
-    <v-card-actions v-if="step === 'confirm'">
-      <v-btn color="primary" @click="submit()">Submit</v-btn>
-    </v-card-actions>
-  </form>
+        <v-btn color="primary" @click="submit()">Submit Question</v-btn>
+      </v-card-text>
+    </v-col>
+  </v-container>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import axios from 'axios';
 
-export default Vue.extend({
+export default Vue.extend<any, any, any, any>({
   props: {
     questionNumber: {
       type: Number,
@@ -119,31 +104,39 @@ export default Vue.extend({
 
   data() {
     return {
-      isUploadingImages: false,
-      step: 'upload-images',
-      images: [] as File[],
-      imgUrls: [] as string[],
-      sdImgUrl: '',
-      correctAnswerImgUrl: '',
-      incorrectAnswerImgUrls: [] as string[],
+      step: 'add-sd',
+      sdText: undefined,
+      sdImg: undefined,
+      recordingUploadingState: '',
       recordingFilename: 'prompt-recording',
       signedRequestForRecording: '',
-      recordingUrl: '',
+      recordingUrl: undefined,
+      answerImages: [] as File[],
+      uploadingImages: false,
+      answers: [] as string[],
     };
+  },
+
+  computed: {
+    validSd() {
+      return (
+        this.fileUploadingState !== 'uploading' &&
+        (this.sdText || this.sdImg || this.fileUploadingState === 'complete')
+      );
+    },
   },
 
   methods: {
     async uploadImages() {
-      this.isUploadingImages = true;
+      this.uploadingImages = true;
 
       const urls = await Promise.all(
-        this.images.map(async (image) => {
+        this.answerImages.map(async (image: File) => {
           const { name, type } = image;
 
-          const { signedRequest, url } = await this.$axios.$get<{
-            signedRequest: string;
-            url: string;
-          }>(`/upload?filename=${name}&fileType=${type}`);
+          const { signedRequest, url } = await this.$axios.$get(
+            `/upload?filename=${name}&fileType=${type}`,
+          );
 
           await axios.put(signedRequest, image, {
             headers: {
@@ -155,34 +148,28 @@ export default Vue.extend({
         }),
       );
 
-      this.isUploadingImages = false;
-      this.imgUrls = urls;
-      this.images = [];
-      this.step = 'select-sd';
+      this.uploadingImages = false;
+      this.answers = urls.map((url) => ({
+        isCorrect: false,
+        imgUrl: url,
+      }));
+      this.answerImages = [];
     },
 
-    selectImage(index: number) {
-      switch (this.step) {
-        case 'select-sd':
-          this.sdImgUrl = this.imgUrls[index];
-          this.imgUrls.splice(index, 1);
-          this.step = 'select-correct-answer';
-          break;
-        case 'select-correct-answer':
-          this.correctAnswerImgUrl = this.imgUrls[index];
-          this.imgUrls.splice(index, 1);
-          this.incorrectAnswerImgUrls = this.imgUrls;
-          this.imgUrls = [];
-          this.step = 'add-recording';
-          break;
-      }
+    markImageAsCorrectAnswer(index: number) {
+      const newAnswers = this.answers.map(({ imgUrl }: any) => ({
+        imgUrl,
+        isCorrect: false,
+      }));
+      newAnswers[index].isCorrect = true;
+
+      this.answers = newAnswers;
     },
 
     async getSignedRequestForRecording() {
-      const { signedRequest, url } = await this.$axios.$get<{
-        signedRequest: string;
-        url: string;
-      }>(`/upload?filename=${this.recordingFilename}&fileType=audio/mpeg`);
+      const { signedRequest, url } = await this.$axios.$get(
+        `/upload?filename=${this.recordingFilename}&fileType=audio/mpeg`,
+      );
 
       this.signedRequestForRecording = signedRequest;
       this.recordingUrl = url;
@@ -190,18 +177,28 @@ export default Vue.extend({
 
     submit() {
       this.$emit('submit-question', {
-        sdImgUrl: this.sdImgUrl,
-        correctAnswerImgUrl: this.correctAnswerImgUrl,
-        incorrectAnswerImgUrls: this.incorrectAnswerImgUrls,
-        promptRecordingUrl: this.recordingUrl,
+        sd: {
+          text: this.sdText,
+          imgUrl: this.sdImgUrl,
+          recordingUrl: this.recordingUrl,
+        },
+        answers: this.answers,
       });
     },
   },
 });
 </script>
 
-<style scoped>
+<style>
 .selectable-image {
   cursor: pointer;
+}
+
+.correct-answer {
+  border: 8px solid var(--v-primary-base);
+}
+
+.ar-content {
+  height: 260px !important;
 }
 </style>

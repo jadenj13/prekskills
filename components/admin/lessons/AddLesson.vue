@@ -2,7 +2,7 @@
   <v-dialog v-model="displayDialog" max-width="500" persistent>
     <v-card>
       <v-card-title>
-        <h6 class="title">Add Lesson</h6>
+        Add Lesson
         <v-spacer />
         <v-btn icon @click="displayDialog = false">
           <v-icon>close</v-icon>
@@ -10,11 +10,23 @@
       </v-card-title>
       <v-form v-if="step === 'create-lesson'" @submit.prevent="createLesson()">
         <v-card-text>
-          <v-text-field v-model="name" label="Lesson Name" required />
+          <v-text-field
+            v-model="name"
+            label="Lesson Name"
+            required
+            :rules="inputRules"
+          />
           <v-text-field
             v-model="description"
             label="Lesson Description"
             required
+            :rules="inputRules"
+          />
+          <v-select
+            v-model="standard"
+            :items="standards"
+            label="Standard"
+            :rules="inputRules"
           />
         </v-card-text>
         <v-card-actions>
@@ -22,6 +34,7 @@
             color="primary"
             class="ml-auto"
             :loading="loadingState === 'creating-lesson'"
+            :disabled="!name || !description || !standard"
             type="submit"
             >Continue</v-btn
           >
@@ -82,9 +95,19 @@ export default Vue.extend<any, any, any, any>({
     return {
       name: '',
       description: '',
+      standard: '',
       step: 'create-lesson',
       loadingState: '',
       lesson: undefined,
+      inputRules: [(value: string) => !!value || 'Field is required.'],
+      standards: [
+        'Math',
+        'Reading',
+        'Language',
+        'Social/Emotional',
+        'Science',
+        'Health/Safety',
+      ],
     };
   },
 
@@ -113,6 +136,7 @@ export default Vue.extend<any, any, any, any>({
         this.lesson = await this.$axios.$post(`/lesson`, {
           name: this.name,
           description: this.description,
+          standard: this.standard,
         });
 
         this.isCreatingLesson = '';
