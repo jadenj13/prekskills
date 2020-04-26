@@ -43,10 +43,6 @@ export default {
     { src: '~/plugins/vue-audio-recorder', mode: 'client' },
   ],
   /*
-   ** Nuxt.js dev-modules
-   */
-  buildModules: ['@nuxtjs/vuetify'],
-  /*
    ** Nuxt.js modules
    */
   modules: [
