@@ -19,13 +19,7 @@ export default Vue.extend({
 
   data() {
     return {
-      lessons: [
-        { name: 'Animals' },
-        { name: 'Shapes' },
-        { name: 'Colors' },
-        { name: 'Food' },
-        { name: 'Reading' },
-      ],
+      lessons: [],
     };
   },
 });
