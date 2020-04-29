@@ -72,13 +72,9 @@
               'correct-answer': isCorrect,
             }"
             cols="4"
+            @click="markImageAsCorrectAnswer(i)"
           >
-            <v-card
-              flat
-              tile
-              class="d-flex selectable-image"
-              @click="markImageAsCorrectAnswer(i)"
-            >
+            <v-card flat tile class="d-flex selectable-image">
               <v-img :src="imgUrl" aspect-ratio="1" />
             </v-card>
           </v-col>
@@ -87,7 +83,7 @@
         <v-btn
           class="ml-auto mt-4"
           color="primary"
-          :disabled="correctAnswerSelected"
+          :disabled="!correctAnswerSelected"
           @click="submit()"
           >Submit Question</v-btn
         >
@@ -131,7 +127,7 @@ export default {
     },
 
     correctAnswerSelected() {
-      return !!this.answers.findIndex((answer) => answer.isCorrect);
+      return !!this.answers.find((answer) => answer.isCorrect);
     },
   },
 
@@ -166,13 +162,10 @@ export default {
     },
 
     markImageAsCorrectAnswer(index) {
-      const newAnswers = this.answers.map(({ imgUrl }) => ({
+      this.answers = this.answers.map(({ imgUrl }, i) => ({
         imgUrl,
-        isCorrect: false,
+        isCorrect: i === index,
       }));
-      newAnswers[index].isCorrect = true;
-
-      this.answers = newAnswers;
     },
 
     async getSignedRequestForRecording() {
@@ -204,7 +197,7 @@ export default {
 }
 
 .correct-answer {
-  border: 8px solid var(--v-primary-base);
+  border: 8px solid #373737;
 }
 
 .ar-content {
