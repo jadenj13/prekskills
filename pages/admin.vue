@@ -16,10 +16,10 @@ export default {
     LessonsWindow,
   },
 
-  data() {
-    return {
-      lessons: [],
-    };
+  async asyncData({ $axios }) {
+    const lessons = await $axios.$get('/lesson');
+
+    return { lessons };
   },
 };
 </script>
